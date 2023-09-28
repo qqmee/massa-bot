@@ -27,7 +27,6 @@
 | Command    | Description                     | Example           |
 | ---------- | ------------------------------- | ----------------- |
 | /start     | Main Menu                       |                   |
-| /admin     | Admin Menu                      |                   |
 | /help      | List all available commands     |                   |
 | /hosting   | Hosting promocodes              |                   |
 | /add       | Add your node                   | `/add abcdef tag` |
@@ -76,7 +75,7 @@ cd massa-bot
 
 # WARN: edit your env variables (goto configuration) before command below
 # Launch database
-## docker compose up -d db
+## docker compose up -d db redis
 
 # install deps
 npm i
