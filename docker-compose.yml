@@ -9,6 +9,11 @@ x-db-variables: &db-variables
 x-redis-variables: &redis-variables
   REDIS_PASSWORD: YphZdBoJzvIRsiHwlQqak0I0fZ0EL9GJDe9L6k79 # replace with new password
 
+x-geoip-variables: &geoip-variables
+  PORT: 3050
+  IPINFO_KEY: REPLACE_ME
+  CRON: 1
+
 x-bot-variables: &bot-variables
   NODE_ENV: production
   MASSA_RPC: 149.202.89.125,198.27.74.5:33035
@@ -43,9 +48,25 @@ services:
     container_name: hek-redis
     restart: always
     image: docker.io/bitnami/redis:7.2
-    command: /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb
+    command: /opt/bitnami/scripts/redis/run.sh --maxmemory 30mb
     environment:
       <<: *redis-variables
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 32M
+
+  geoip:
+    container_name: hek-geoip
+    restart: always
+    image: ghcr.io/qqmee/massa-geoip:v1.0.0
+    depends_on:
+      - db
+      - redis
+    environment:
+      <<: [*db-variables, *geoip-variables]
     deploy:
       resources:
         limits:
@@ -53,14 +74,15 @@ services:
         reservations:
           memory: 32M
 
-  massa-cron:
+  cron:
     container_name: hek-cron
     restart: always
-    image: wow
+    image: ghcr.io/qqmee/massa-telegram-bot:v1.0.0
     command: dist/apps/cron/main.js
     depends_on:
       - db
       - redis
+      - geoip
     environment:
       <<: [*db-variables, *bot-variables, *redis-variables]
     deploy:
@@ -70,14 +92,15 @@ services:
         reservations:
           memory: 128M
 
-  massa-bot:
+  bot:
     container_name: hek-bot
     restart: always
-    image: wow
+    image: ghcr.io/qqmee/massa-telegram-bot:v1.0.0
     command: dist/apps/bot/main.js
     depends_on:
       - db
       - redis
+      - geoip
     environment:
       <<: [*db-variables, *bot-variables, *redis-variables]
     deploy:
