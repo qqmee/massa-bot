@@ -1,0 +1,79 @@
+{
+  "name": "m-telegram-bot",
+  "version": "1.0.0",
+  "description": "telegram bot on nest framework",
+  "author": "https://github.com/qqmee",
+  "private": true,
+  "license": "gpl-3.0",
+  "scripts": {
+    "prepare": "husky install",
+    "prebuild": "rimraf dist",
+    "build": "nest build",
+    "dev": "npm run dev::bot",
+    "dev::bot": "nest start bot --watch",
+    "dev::cron": "CRON=1 nest start cron --watch",
+    "start::bot": "node dist/apps/bot/main.js",
+    "start::cron": "CRON=1 node dist/apps/cron/main.js",
+    "format": "prettier \"src/**/*.ts\" --write",
+    "lint": "eslint \"src/**/*.ts\" --fix"
+  },
+  "engines": {
+    "node": ">=20.5.7"
+  },
+  "lint-staged": {
+    "**/*.{js,ts}": [
+      "npm run format",
+      "npm run lint"
+    ]
+  },
+  "dependencies": {
+    "@grammyjs/i18n": "^1.0.1",
+    "@grammyjs/nestjs": "^0.3.4",
+    "@grammyjs/parse-mode": "^1.7.1",
+    "@grammyjs/storage-typeorm": "^2.3.1",
+    "@nestjs/axios": "^3.0.0",
+    "@nestjs/bull": "^10.0.1",
+    "@nestjs/cache-manager": "^2.1.0",
+    "@nestjs/common": "^9.4.3",
+    "@nestjs/core": "^9.4.3",
+    "@nestjs/platform-express": "^9.4.3",
+    "@nestjs/schedule": "^3.0.3",
+    "@nestjs/typeorm": "^9.0.1",
+    "bull": "^4.11.3",
+    "cache-manager": "^5.2.3",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
+    "date-fns": "^2.29.3",
+    "dotenv": "^16.3.1",
+    "grammy": "^1.18.1",
+    "grammy-inline-menu": "^8.0.1",
+    "lodash": "^4.17.21",
+    "mysql2": "^3.6.0",
+    "reflect-metadata": "^0.1.13",
+    "rimraf": "^3.0.2",
+    "rxjs": "^7.8.1",
+    "typeorm": "^0.3.17",
+    "znv": "^0.4.0"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^9.5.0",
+    "@nestjs/schematics": "^9.2.0",
+    "@types/cron": "^2.4.0",
+    "@types/lodash": "^4.14.191",
+    "@types/node": "^20.5.7",
+    "@typescript-eslint/eslint-plugin": "^6.5.0",
+    "@typescript-eslint/parser": "^6.5.0",
+    "eslint": "^8.48.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^14.0.1",
+    "localtunnel": "^2.0.2",
+    "prettier": "^3.0.3",
+    "source-map-support": "^0.5.21",
+    "ts-loader": "^9.4.4",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.2.2"
+  }
+}

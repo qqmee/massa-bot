@@ -1,0 +1,88 @@
+version: "3.9"
+
+# Replace with your values
+x-db-variables: &db-variables
+  MYSQL_DATABASE: massa
+  MYSQL_USER: massa
+  MYSQL_PASSWORD: 2fiYyvl8ndAggYVgrfu7QtLzEd1OSMAke # replace with new password
+
+x-redis-variables: &redis-variables
+  REDIS_PASSWORD: YphZdBoJzvIRsiHwlQqak0I0fZ0EL9GJDe9L6k79 # replace with new password
+
+x-bot-variables: &bot-variables
+  NODE_ENV: production
+  MASSA_RPC: 149.202.89.125,198.27.74.5:33035
+  BOT_ADMINS_ID: 1,2
+  BOTS: 1:PPrreevvee,32:DDMMeeDDVveEdd
+  PORT: 8443
+  WEBHOOK_URL: https://127.0.0.1:8443 # replace with your ip
+
+services:
+  db:
+    container_name: hek-db
+    restart: always
+    image: docker.io/library/mysql:8.1
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - ./.data/hek-db/lib:/var/lib/mysql
+      - ./.data/hek-db/log:/var/log/mysql
+      # - ./.data/my.cnf:/etc/mysql/conf.d/hek.cnf
+    cap_add:
+      # mbind: Operation not permitted
+      - SYS_NICE
+    environment:
+      <<: *db-variables
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 128M
+
+  redis:
+    container_name: hek-redis
+    restart: always
+    image: docker.io/bitnami/redis:7.2
+    command: /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb
+    environment:
+      <<: *redis-variables
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 32M
+
+  massa-cron:
+    container_name: hek-cron
+    restart: always
+    image: wow
+    command: dist/apps/cron/main.js
+    depends_on:
+      - db
+      - redis
+    environment:
+      <<: [*db-variables, *bot-variables, *redis-variables]
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
+
+  massa-bot:
+    container_name: hek-bot
+    restart: always
+    image: wow
+    command: dist/apps/bot/main.js
+    depends_on:
+      - db
+      - redis
+    environment:
+      <<: [*db-variables, *bot-variables, *redis-variables]
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
