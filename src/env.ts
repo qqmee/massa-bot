@@ -7,11 +7,11 @@ import { TelegramBotConfiguration } from '@shared/telegram/telegram.interfaces';
 const FALLBACK_LOCALE = 'en';
 
 const BOT_MIRRORS = fs
-  .readFileSync(__dirname + '/../data/mirrors.txt', 'utf8')
+  .readFileSync(__dirname + '/../static/mirrors.txt', 'utf8')
   .trim();
 
 const BOT_COMMUNITIES = fs
-  .readFileSync(__dirname + '/../data/communities.txt', 'utf8')
+  .readFileSync(__dirname + '/../static/communities.txt', 'utf8')
   .trim();
 
 const LOCALES = fs

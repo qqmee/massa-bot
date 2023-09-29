@@ -23,7 +23,7 @@ WORKDIR /app
 ENV NODE_ENV="production"
 
 COPY --from=build /app/node_modules /app/node_modules
-COPY ./data /app/data
+COPY ./static /app/static
 COPY ./locales /app/locales
 COPY --from=build /app/dist /app/dist
 

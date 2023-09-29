@@ -126,4 +126,4 @@ Set environment variables in `docker-compose.yml`
 
 ## Mirrors
 
-[Here](./data/mirrors.txt)
+[Here](./static/mirrors.txt)
