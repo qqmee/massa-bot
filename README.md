@@ -62,7 +62,20 @@ The main folder of this repository contains a functional docker-compose.yml file
 ```
 curl -sSL https://raw.githubusercontent.com/qqmee/massa-telegram-bot/main/docker-compose.yml > docker-compose.yml
 mkdir -p .data/hek-db/{lib,log}
+```
 
+Generate self signed certificate https://core.telegram.org/bots/self-signed
+
+Replace `YOUR_IP`
+
+```
+openssl req -newkey rsa:2048 -sha256 -nodes -keyout .data/private.key -x509 -days 3650 -out .data/public.pem -subj "/C=US/ST=New York/L=Brooklyn/O=Example Brooklyn Company/CN=YOUR_IP"
+
+chmod 444 .data/{private.key,public.pem}
+```
+
+Start services
+```
 # WARN: edit your env variables (goto configuration) before command below
 ## docker compose up -d
 ```
@@ -70,8 +83,8 @@ mkdir -p .data/hek-db/{lib,log}
 ## Installation (development)
 
 ```
-git clone https://github.com
-cd massa-bot
+git clone https://github.com/qqmee/massa-telegram-bot
+cd massa-telegram-bot
 
 # WARN: edit your env variables (goto configuration) before command below
 # Launch database
@@ -91,8 +104,6 @@ npx localtunnel --port 3000 --subdomain abcdef # aka https://abcdef.loca.lt
 ```
 
 ## Configuration (through Environment Variables)
-
-Generate [self-signed](https://core.telegram.org/bots/self-signed) certificates &
 
 Set environment variables in `docker-compose.yml`
 
