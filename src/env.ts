@@ -38,13 +38,16 @@ const loadEnvironment = () => {
   });
 };
 
+const env = loadEnvironment();
+
 export const Environment = {
-  ...loadEnvironment(),
+  ...env,
   FALLBACK_LOCALE,
   BOT_MIRRORS,
   BOT_COMMUNITIES,
   LOCALES,
   WORKDIR: process.cwd(),
+  SSL_ENABLED: env.NODE_ENV === 'production' && [443, 8443].includes(env.PORT),
 };
 
 // export type Environment = ReturnType<typeof loadEnvironment>;

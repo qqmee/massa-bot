@@ -23,7 +23,7 @@ async function bootstrap() {
     BotModule,
     // remember src/shared/telegram/services/telegram.service.ts webhookCallback:express
     new ExpressAdapter(),
-    [443, 8443].includes(Environment.PORT)
+    Environment.SSL_ENABLED
       ? {
           httpsOptions: {
             cert: readFileSync(`${Environment.WORKDIR}/public.pem`),

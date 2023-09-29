@@ -57,7 +57,7 @@ export class TelegramService {
   }
 
   private getWebhookOptions() {
-    if (Environment.NODE_ENV === 'production') {
+    if (Environment.SSL_ENABLED) {
       return {
         certificate: new InputFile(
           createReadStream(`${Environment.WORKDIR}/public.pem`),
