@@ -2,7 +2,9 @@
 
 🇺🇸 English | 🇷🇺 [Русский](./README.ru.md)
 
-> Sources of Telegram bot https://t.me/hekumatiarubot for [Massa Blockchain](https://massa.net/)
+Sources of Telegram bot https://t.me/hekumatiarubot for [Massa Blockchain](https://massa.net/)
+- Find node by IP
+- Receive notification when a roll is sold
 
 **Table of contents**
 
@@ -10,8 +12,8 @@
 - [Commands](#commands)
 - [System Requirements](#system-requirements)
 - [Installation](#installation)
-- [Installation (development)](#installation-development)
 - [Configuration](#configuration-through-environment-variables)
+- [Installation (development)](#installation-development)
 - [Mirrors](#mirrors)
 
 ## Under the hood
@@ -80,29 +82,6 @@ Start services
 ## docker compose up -d
 ```
 
-## Installation (development)
-
-```
-git clone https://github.com/qqmee/massa-telegram-bot
-cd massa-telegram-bot
-
-# WARN: edit your env variables (goto configuration) before command below
-# Launch database
-## docker compose up -d db redis
-
-# install deps
-npm i
-
-# run webhook listener
-npm run dev &
-
-# optional: launch cron tasks
-npm run dev::cron
-
-# launch https tunnel for webhook (replace 'abcdef' with your subdomain)
-npx localtunnel --port 3000 --subdomain abcdef # aka https://abcdef.loca.lt
-```
-
 ## Configuration (through Environment Variables)
 
 Set environment variables in `docker-compose.yml`
@@ -123,6 +102,30 @@ Set environment variables in `docker-compose.yml`
 | BOT_ADMINS     | bot,cron       | 1,2                                                 | admin id for cronjob notifications (/whoami command) |
 | PORT           | bot            | 3000                                                | webhook port                                         |
 | WEBHOOK_URL    | bot            | https://abcdef.loca.lt                              | webhook domain                                       |
+
+
+## Installation (development)
+
+```
+git clone https://github.com/qqmee/massa-bot
+cd massa-bot
+
+# WARN: edit your env variables (goto configuration) before command below
+# Launch database
+## docker compose up -d db redis
+
+# install deps
+npm i
+
+# run webhook listener
+npm run dev &
+
+# optional: launch cron tasks
+npm run dev::cron
+
+# launch https tunnel for webhook (replace 'abcdef' with your subdomain)
+npx localtunnel --port 3000 --subdomain abcdef # aka https://abcdef.loca.lt
+```
 
 ## Mirrors
 
