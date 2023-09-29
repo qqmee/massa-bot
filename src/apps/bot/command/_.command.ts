@@ -16,7 +16,6 @@ export class OnMessage {
   @On('message')
   async catchAll(@Ctx() ctx: BotContext) {
     const message = (ctx?.message?.text || '').trim();
-    console.log('message', message);
 
     if (message.startsWith('/')) {
       if (message === '/start') {
@@ -40,7 +39,6 @@ export class OnMessage {
     const isBlocked = ctx.session.isBlocked;
     if (!isBlocked) return;
 
-    console.log('unlock');
     ctx.session.isBlocked = false;
   }
 
