@@ -171,7 +171,6 @@ command-mirror = Mirror link
 command-release = Release from GitHub
 command-locale = Change locale
 command-mode = Display mode node
-command-admin = Admin Menu
 
 exception-unknown = Internal Server Error. Try again
 exception-gateway-unavailable = Gateway `{ $gateway }` is down.

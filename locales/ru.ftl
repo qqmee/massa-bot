@@ -175,7 +175,6 @@ command-mirror = Зеркала
 command-release = Получить последний релиз Massa
 command-locale = Изменить язык
 command-mode = Изменить режим отображения адресов
-command-admin = Админ меню
 
 exception-unknown = Внутренняя ошибка сервера. Попробуй еще раз
 exception-gateway-unavailable = Сервис `{ $gateway }` недоступен.

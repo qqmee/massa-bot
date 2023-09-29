@@ -18,5 +18,4 @@ export enum Command {
   Mirror = 'mirror',
   Locale = 'locale',
   Release = 'release',
-  Admin = 'admin',
 }
