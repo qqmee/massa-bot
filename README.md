@@ -60,7 +60,7 @@ Requires [Docker](https://docs.docker.com/desktop/install/linux-install/).
 The main folder of this repository contains a functional docker-compose.yml file. Run the application using it as shown below:
 
 ```
-curl -sSL https://raw.githubusercontent.com/author/repo/main/docker-compose.yml > docker-compose.yml
+curl -sSL https://raw.githubusercontent.com/qqmee/massa-telegram-bot/main/docker-compose.yml > docker-compose.yml
 mkdir -p .data/hek-db/{lib,log}
 
 # WARN: edit your env variables (goto configuration) before command below
