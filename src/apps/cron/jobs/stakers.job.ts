@@ -11,6 +11,7 @@ import { groupBy } from '@bot/helpers/group-by.helper';
 import { RejectAfterException } from '@libs/reject-after';
 import { chunk } from '@bot/helpers/chunk.helper';
 import { createMap } from '@bot/helpers/create-map.helper';
+import { formatter } from '@shared/telegram/util/formatter.util';
 
 @Injectable()
 export class StakersJob extends AbstractJob {
@@ -81,7 +82,7 @@ export class StakersJob extends AbstractJob {
         await this.messageService.add({
           chatId: user.chatId,
           botId: user.botId,
-          text,
+          text: formatter(text),
         });
       }
     }
