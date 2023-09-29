@@ -10,6 +10,9 @@ x-redis-variables: &redis-variables
   REDIS_PASSWORD: YphZdBoJzvIRsiHwlQqak0I0fZ0EL9GJDe9L6k79 # replace with new password
 
 x-geoip-variables: &geoip-variables
+  MYSQL_DATABASE: geoip
+  MYSQL_USER: geoip
+  MYSQL_PASSWORD: 2fiYyvl8ndAggYVgrfu7QtLzEd1OSMAke # replace with new password
   PORT: 3050
   IPINFO_KEY: REPLACE_ME
   CRON: 1
@@ -35,8 +38,15 @@ services:
     cap_add:
       # mbind: Operation not permitted
       - SYS_NICE
+    ports:
+      # debug only
+      # - "127.0.0.1:23306:3306"
     environment:
       <<: *db-variables
+      # You need to specify one of the following as an environment variable
+      # Only for 1st launch. Remove after
+      # MYSQL_ROOT_PASSWORD: password
+      # MYSQL_RANDOM_ROOT_PASSWORD: true
     deploy:
       resources:
         limits:
@@ -61,12 +71,16 @@ services:
   geoip:
     container_name: hek-geoip
     restart: always
-    image: ghcr.io/qqmee/massa-geoip:v1.0.0
+    image: ghcr.io/qqmee/massa-geo:latest
     depends_on:
       - db
       - redis
     environment:
-      <<: [*db-variables, *geoip-variables]
+      <<: *geoip-variables
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "1"
     deploy:
       resources:
         limits:
@@ -77,7 +91,7 @@ services:
   cron:
     container_name: hek-cron
     restart: always
-    image: ghcr.io/qqmee/massa-telegram-bot:v1.0.0
+    image: ghcr.io/qqmee/massa-bot:latest
     command: dist/apps/cron/main.js
     depends_on:
       - db
@@ -85,6 +99,10 @@ services:
       - geoip
     environment:
       <<: [*db-variables, *bot-variables, *redis-variables]
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "1"
     deploy:
       resources:
         limits:
@@ -95,7 +113,7 @@ services:
   bot:
     container_name: hek-bot
     restart: always
-    image: ghcr.io/qqmee/massa-telegram-bot:v1.0.0
+    image: ghcr.io/qqmee/massa-bot:latest
     command: dist/apps/bot/main.js
     depends_on:
       - db
@@ -103,6 +121,15 @@ services:
       - geoip
     environment:
       <<: [*db-variables, *bot-variables, *redis-variables]
+    ports:
+      - "0.0.0.0:8443:8443"
+    volumes:
+      - ./.data/private.key:/app/private.key:ro
+      - ./.data/public.pem:/app/public.pem:ro
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "1"
     deploy:
       resources:
         limits:
