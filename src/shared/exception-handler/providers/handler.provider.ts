@@ -1,4 +1,4 @@
-import { Provider } from '@nestjs/common';
+import { Logger, Provider } from '@nestjs/common';
 
 import { Environment } from '@env';
 import { EXCEPTION_HANDLER } from '../constants/exception-handler.const';
@@ -8,6 +8,8 @@ import { ProductionHandler } from '../handlers/production.handler';
 import { SessionService } from '@shared/database/services/session.service';
 import { MessengerService } from '@shared/telegram/services/messenger.service';
 
+const logger = new Logger('ExceptionHandler');
+
 export const HandlerProvider: Provider = {
   provide: EXCEPTION_HANDLER,
   inject: [SessionService, MessengerService],
@@ -16,9 +18,9 @@ export const HandlerProvider: Provider = {
     messengerService: MessengerService,
   ) => {
     if (Environment.NODE_ENV === 'development') {
-      return new DevelopmentHandler(sessionService, messengerService);
+      return new DevelopmentHandler(sessionService, messengerService, logger);
     }
 
-    return new ProductionHandler(sessionService, messengerService);
+    return new ProductionHandler(sessionService, messengerService, logger);
   },
 };

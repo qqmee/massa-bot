@@ -1,3 +1,5 @@
+import { Logger } from '@nestjs/common';
+
 import { SessionService } from '@shared/database/services/session.service';
 import { Context } from '../interfaces/context.interface';
 import { SetSessionPropertyDto } from '@shared/database/dto/set-session-property.dto';
@@ -9,6 +11,7 @@ export abstract class AbstractHandler implements ExceptionHandler {
   public constructor(
     protected readonly sessionService: SessionService,
     protected readonly messengerService: MessengerService,
+    protected readonly logger: Logger,
   ) {}
 
   protected abstract process(error: Error, context?: Context): Promise<void>;
@@ -19,6 +22,8 @@ export abstract class AbstractHandler implements ExceptionHandler {
       this.handleUserBlock(context);
       return;
     }
+
+    this.logger.error(error, error.stack);
 
     await this.process(error, context);
   }
