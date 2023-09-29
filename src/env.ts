@@ -35,6 +35,7 @@ const loadEnvironment = () => {
     BOTS: z.string().transform((value) => parseEnvBots(value)),
     BOT_ADMINS: z.string().transform((value) => parseEnvBotAdmins(value)),
     WEBHOOK_URL: z.string(),
+    CRON_STAKERS: z.boolean().default(false),
   });
 };
 

@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 
+import { Environment } from '@env';
 import { MessageService } from '@shared/queue/services/message.service';
 import { UsersService } from '@shared/database/services/users.service';
 import { AbstractJob } from './abstract.job';
@@ -25,6 +26,10 @@ export class StakersJob extends AbstractJob {
   }
 
   public async doWork(signal: AbortSignal) {
+    if (!Environment.CRON_STAKERS) {
+      return;
+    }
+
     const users = await this.usersService.getForNotification(
       NotificationsField.Rolls,
     );
