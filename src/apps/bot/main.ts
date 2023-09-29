@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import fs from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { NestFactory } from '@nestjs/core';
 import {
   ExpressAdapter,
@@ -26,8 +26,8 @@ async function bootstrap() {
     [443, 8443].includes(Environment.PORT)
       ? {
           httpsOptions: {
-            cert: fs.readFileSync(`${Environment.WORKDIR}/public.pem`),
-            key: fs.readFileSync(`${Environment.WORKDIR}/private.key`),
+            cert: readFileSync(`${Environment.WORKDIR}/public.pem`),
+            key: readFileSync(`${Environment.WORKDIR}/private.key`),
           },
         }
       : {},
