@@ -19,7 +19,7 @@ x-geoip-variables: &geoip-variables
 
 x-bot-variables: &bot-variables
   NODE_ENV: production
-  MASSA_RPC: 149.202.89.125,198.27.74.5:33035
+  MASSA_RPC: 149.202.89.125:33035,198.27.74.5:33035
   BOT_ADMINS_ID: 1,2
   BOTS: 1:PPrreevvee,32:DDMMeeDDVveEdd
   PORT: 8443
