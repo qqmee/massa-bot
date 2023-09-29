@@ -40,6 +40,7 @@ export class TelegramService {
         path,
       });
 
+      await bot.api.deleteWebhook();
       await this.setWebhook(bot, path);
       await this.setCommands(bot);
     }

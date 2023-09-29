@@ -24,7 +24,7 @@ export class TelegramModule implements NestModule {
   public constructor(private readonly telegramService: TelegramService) {}
 
   public configure(consumer: MiddlewareConsumer) {
-    this.telegramService.configure(consumer);
+    return this.telegramService.configure(consumer);
   }
 
   public static forRootAsync(
