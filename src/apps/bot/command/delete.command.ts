@@ -8,6 +8,7 @@ import { Command } from '../enums/command.enum';
 import { StakerComponent } from '../components/staker.component';
 import { DeleteUserStakerDto } from '@shared/database/dto/delete-user-staker.dto';
 import { MessengerService } from '@shared/telegram/services/messenger.service';
+import { formatter } from '@shared/telegram/util/formatter.util';
 
 @Update()
 @UseFilters(ExceptionFilter)
@@ -25,7 +26,7 @@ export class DeleteCommand {
     return this.messengerService.sendMessage({
       botId,
       chatId,
-      text,
+      text: formatter(text),
     });
   }
 

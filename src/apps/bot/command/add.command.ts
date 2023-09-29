@@ -65,7 +65,7 @@ export class AddCommand {
     const created = await this.stakerComponent.create(dto);
 
     if (created) {
-      return textArray.join('');
+      return formatter(textArray.join(''));
     }
 
     return formatter(ctx.t('address-exists'));
