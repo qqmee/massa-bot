@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Equal, IsNull, Repository } from 'typeorm';
+import { Equal, Repository } from 'typeorm';
 
 import { UserStaker } from '../entity/user-staker.entity';
 import { CreateUserStakerDto } from '../dto/create-user-staker.dto';
@@ -38,14 +38,16 @@ export class UserStakerService {
   }
 
   public async delete(dto: DeleteUserStakerDto) {
-    const query = await this.repo.softDelete({
-      botId: Equal(dto.botId),
-      chatId: Equal(dto.chatId),
-      address: Equal(dto.address),
-      deleted: IsNull(),
-    });
+    const qb = await this.repo
+      .createQueryBuilder()
+      .softDelete()
+      .where('botId = :botId', { botId: dto.botId })
+      .andWhere('chatId = :chatId', { chatId: dto.chatId })
+      .andWhere('deleted IS NULL')
+      .andWhere('(address LIKE :q OR tag LIKE :q)', { q: `${dto.address}%` })
+      .execute();
 
-    return query.affected;
+    return qb.affected;
   }
 
   public find(dto: FindUserStakerDto): Promise<FindResult[]> {

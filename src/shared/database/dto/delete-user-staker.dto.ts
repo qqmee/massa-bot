@@ -1,5 +1,5 @@
 import { IsNumber, IsString, validateOrReject } from 'class-validator';
-import { plainToInstance } from 'class-transformer';
+import { Transform, plainToInstance } from 'class-transformer';
 
 export class DeleteUserStakerDto {
   @IsNumber()
@@ -9,6 +9,7 @@ export class DeleteUserStakerDto {
   readonly chatId: number;
 
   @IsString()
+  @Transform(({ value }) => value?.trim())
   readonly address: string;
 
   static async from(plain: DeleteUserStakerDto) {
