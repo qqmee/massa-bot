@@ -59,6 +59,7 @@ help-detail-stats = __Информация о сети__
 help-detail-extra = __Дополнительно__
 help-detail =
   Машина от сообщества, поддержка - @hcligroup
+  Исходники бота: https://github.com/qqmee/massa-bot
   Бот может работать в каналах.
 
 community = Сообщества
@@ -155,6 +156,8 @@ mirror-detail =
   Бота можно добавить в группу или использовать зеркало:
 
   { $mirror }
+
+sources = Исходники бота
 
 command-my = Показать информацию о нодах
 command-start = Меню

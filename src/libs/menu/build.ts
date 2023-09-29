@@ -10,9 +10,23 @@ export async function buildMenu(
 ) {
   const menu = await createFileTemplate(tree, i18nKeyMenu);
 
+  if (tree.isUrl()) {
+    return menu;
+  }
+
   for (const leaf of tree.getChilds()) {
-    const submenu = await buildMenu(leaf);
-    addBackButtons(submenu);
+    const submenuOrUrl = await buildMenu(leaf);
+
+    if (leaf.isUrl()) {
+      menu.url(
+        (ctx) => ctx.t(leaf.getBasename()),
+        submenuOrUrl as unknown as string,
+      );
+
+      continue;
+    }
+
+    addBackButtons(submenuOrUrl);
 
     const leafBasename = leaf.getBasename();
 
@@ -20,9 +34,14 @@ export async function buildMenu(
       ? leafBasename
       : `${tree.getBasename()}-${leafBasename}`;
 
-    menu.submenu((ctx: BotContext) => ctx.t(fullName), leafBasename, submenu, {
-      joinLastRow: joinLastRow?.includes(fullName),
-    });
+    menu.submenu(
+      (ctx: BotContext) => ctx.t(fullName),
+      leafBasename,
+      submenuOrUrl,
+      {
+        joinLastRow: joinLastRow?.includes(fullName),
+      },
+    );
   }
 
   return menu;

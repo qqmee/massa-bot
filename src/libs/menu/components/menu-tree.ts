@@ -9,6 +9,7 @@ export class MenuTree {
   readonly #path: string;
   readonly #basename: string;
   readonly #children: Array<MenuTree>;
+  readonly #isUrl: boolean;
 
   // filled for top-level
   readonly #routes: Set<string>;
@@ -16,11 +17,13 @@ export class MenuTree {
   private constructor(
     rootPath: string,
     basename: string,
+    isUrl = false,
     children = [],
     routes = new Set<string>(),
   ) {
     this.#path = rootPath;
     this.#basename = basename;
+    this.#isUrl = isUrl;
     this.#children = children;
     this.#routes = routes;
   }
@@ -45,10 +48,14 @@ export class MenuTree {
     return this.#routes;
   }
 
+  public isUrl() {
+    return !!this.#isUrl;
+  }
+
   /**
    * Scan given `path` fs for *.menu.js files & directories
    *
-   * @param path __dirname of *.menu.js
+   * @param path __dirname of *.menu.js, *.url.js
    * @returns Tree
    */
   public static createFrom(dirname: string) {
@@ -65,16 +72,17 @@ export class MenuTree {
       children: for (const child of children) {
         // example match[1] for /menu/stats/free.menu.js
         // value: free
-        const match = /^([\-a-z0-9]+)\.menu\.js$/.exec(child);
+        const match = /^([\-a-z0-9]+)\.(menu|url)\.js$/.exec(child);
         const basename = match?.[1] ?? path.basename(child);
-
-        const childPath = `${currentNode.#path}/${child}`;
-        const childNode = new MenuTree(childPath, basename);
+        const isUrl = (match?.[2] ?? null) === 'url';
 
         if (child === FILE_INDEX) {
           // skip index.menu.js file
           continue children;
         }
+
+        const childPath = `${currentNode.#path}/${child}`;
+        const childNode = new MenuTree(childPath, basename, isUrl);
 
         if (fs.statSync(childNode.#path).isDirectory()) {
           stack.push(childNode);

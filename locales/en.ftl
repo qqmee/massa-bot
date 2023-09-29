@@ -59,7 +59,10 @@ help-detail-stats = __Network stats__
 help-detail-extra = __Extra__
 help-detail =
   This is community-driven bot by @hcligroup
+  Sources: https://github.com/qqmee/massa-bot
   You can add bot to channel.
+
+sources = Bot sources
 
 community = Community
 community-detail =

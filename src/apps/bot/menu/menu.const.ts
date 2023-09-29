@@ -13,6 +13,7 @@ export const MENU_TOP_ORDER = [
   'mirror',
   'locale',
   'help',
+  'sources',
 ];
 
 // top level menu group buttons
