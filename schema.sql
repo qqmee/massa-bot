@@ -20,6 +20,21 @@ CREATE TABLE `user_stakers` (
   KEY `botId_chatId_idx` (`botId`,`chatId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
+CREATE TABLE `nodes` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `nodeId` varchar(52) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `ip` varchar(45) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `ipVersion` enum('4','6') COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `version` varchar(12) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '',
+  `companyId` int unsigned DEFAULT NULL,
+  `asn` int unsigned DEFAULT NULL,
+  `countryCode` char(2) CHARACTER SET latin1 COLLATE latin1_general_ci DEFAULT NULL,
+  `lastSeen` timestamp NULL DEFAULT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ip+nodeId+version_uidx` (`ip`,`nodeId`,`version`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
 CREATE TABLE `sessions` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `key` varchar(255) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
