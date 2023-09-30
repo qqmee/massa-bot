@@ -20,7 +20,11 @@ bootstrap().catch((error) => {
   logger.error(error, error.stack);
 });
 
-function exitHandler() {
+function exitHandler(error?: Error) {
+  if (error instanceof Error) {
+    logger.error(error, error.stack);
+  }
+
   logger.log('Shutting down..');
   process.exit();
 }
